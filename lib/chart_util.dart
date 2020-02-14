@@ -1,13 +1,12 @@
-import 'dart:convert';
-import 'dart:html';
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:flutter_chart_sample/ReportRepository.dart';
+import 'package:intl/intl.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:charts_flutter/flutter.dart';
 import 'package:charts_flutter/src/text_element.dart';
 import 'package:charts_flutter/src/text_style.dart' as style;
-import 'package:flutter/services.dart';
 
 
 
@@ -17,6 +16,32 @@ class ChartUtil {
   static String dateValue;
   static String tripSensorValue;
   static String tripDateValue;
+
+  Future<charts.TimeSeriesChart> getChartData() async {
+
+    var reports = await ReportRepository().getReports().then((reports) {
+
+      List<LinearReport> vibrationData = [];
+      List<LinearReport> tripData = [];
+
+      reports.forEach((report) {
+        vibrationData.add(new LinearReport(DateTime.parse(report.date), report.vibration, ));
+        tripData.add(new LinearReport(DateTime.parse(report.date), report.trips.toDouble(), ));
+      });
+
+      vibrationData.sort((a, b) {
+        return a.time.compareTo(b.time);
+      });
+
+      tripData.sort((a, b) {
+        return a.time.compareTo(b.time);
+      });
+
+      return _createChartData(vibrationData, true);
+    });
+
+    return reports;
+  }
 
   static charts.TimeSeriesChart _createChartData(List<LinearReport> vibrationData, bool isVibrationData) {
 
@@ -152,11 +177,7 @@ double dp(double val, int places) {
   return ((val * mod).round().toDouble() / mod);
 }
 
-Future<String>_loadFromAsset() async {
-  return await rootBundle.loadString("assets/chart_data.json");
-}
-
-Future<List<>> parseJson() async {
-  String jsonString = await _loadFromAsset();
-  final jsonResponse = jsonDecode(jsonString);
+getDate(String lastTrip) {
+  final DateTime dateTime = DateTime.parse(lastTrip);
+  return DateFormat("MMM d, yyyy").format(dateTime);
 }
