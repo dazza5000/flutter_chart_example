@@ -170,7 +170,6 @@ class TripCustomCircleSymbolRenderer extends CircleSymbolRenderer {
   }
 }
 
-}
 
 double dp(double val, int places) {
   double mod = pow(10.0, places);
