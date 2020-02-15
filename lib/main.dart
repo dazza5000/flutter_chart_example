@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Vibration Data'),
     );
   }
 }
@@ -47,48 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                _getChart("Vibration", vibrationData,
-                    (MediaQuery.of(context).size.width * .40)),
-                _getChart("Trips", tripData,
-                    (MediaQuery.of(context).size.width * .40))
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _getChart(String title,
-      charts.TimeSeriesChart lineChartData, double dimension) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(title,
-              style: Theme.of(context)
-                  .textTheme
-                  .subhead
-                  .copyWith(fontWeight: FontWeight.w600)),
-        ),
-        SizedBox(
-          height: dimension,
-          width: dimension,
-          child: lineChartData,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: Text("Last 30 days"),
-        )
-      ],
+      body: FractionallySizedBox(child: vibrationData, heightFactor: .5,)
     );
   }
 }
