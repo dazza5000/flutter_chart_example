@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:charts_flutter/flutter.dart';
 
 import 'chart_util.dart';
-
 
 void main() => runApp(MyApp());
 
@@ -30,24 +29,34 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
-  charts.TimeSeriesChart vibrationData;
-  charts.TimeSeriesChart tripData;
+  List<Series> vibrationData;
 
   @override
   Widget build(BuildContext context) {
 
-    ChartUtil().getChartData().then((vibrationData)  {
+    ChartUtil().getChartData().then((vibrationData) {
       setState(() {
         this.vibrationData = vibrationData;
       });
     });
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: FractionallySizedBox(child: vibrationData, heightFactor: .5,)
-    );
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        body: Center(
+            child: vibrationData != null
+                ? FractionallySizedBox(
+                    child: TimeSeriesChart(
+                      vibrationData,
+                      defaultRenderer: new LineRendererConfig(
+                          includeArea: true, stacked: true),
+                      animate: false,
+                      domainAxis:
+                          new DateTimeAxisSpec(renderSpec: NoneRenderSpec()),
+                    ),
+                    heightFactor: .5,
+                  )
+                : CircularProgressIndicator()));
   }
 }
