@@ -12,8 +12,6 @@ class ReportRepository {
   Future<List<Report>> getReports() async {
 
     String jsonString = await _loadFromAsset();
-//    final jsonResponse = jsonDecode(jsonString);
-
     return parseReports(jsonString);
   }
 
