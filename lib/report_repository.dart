@@ -6,18 +6,13 @@ import 'package:flutter_chart_sample/report.dart';
 
 class ReportRepository {
 
-  static Map<String, List<Report>> reportCache = {};
-  static DateTime cacheTime = DateTime.now();
-
   Future<List<Report>> getReports() async {
-
     String jsonString = await _loadFromAsset();
     return parseReports(jsonString);
   }
 
   List<Report> parseReports(String responseBody) {
     final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
-
     return parsed.map<Report>((json) => Report.fromJson(json)).toList();
   }
 
@@ -26,4 +21,3 @@ class ReportRepository {
   }
 
 }
-
